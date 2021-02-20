@@ -3,22 +3,44 @@ package com.example.kotlincoroutines
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import android.widget.TextView
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
+    lateinit var myTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        myTextView = findViewById(R.id.my_text)
+        runBlocking {
+            printCoroutines("Tamer")
+        }
+
+
+
+
         doTaskA(1)
         printMyTextAfterDelay1("Hello Kotlin")
 
-        GlobalScope.launch {
-            Log.d("Fun", "Current thread : ${Thread.currentThread().name}")
-            printMyTextAfterDelay2("Coroutines")
-        }
+//        GlobalScope.launch (newSingleThreadContext("Tamer Thread")) {
+//            Log.d("Fun", "Current thread : ${Thread.currentThread().name}")
+//            printMyTextAfterDelay2("Coroutines")
+//        }
 
+    }
+
+
+
+    //Coroutines
+    suspend fun printCoroutines(myText: String) {
+        GlobalScope.launch (Dispatchers.IO){
+            delay(5000)
+            withContext(Dispatchers.Main) {
+                myTextView.text = myText
+            }
+
+
+        }
     }
 
 
@@ -28,11 +50,8 @@ class MainActivity : AppCompatActivity() {
         Log.d("my Fun", myText)
     }
 
-    //Coroutines
-    suspend fun printMyTextAfterDelay2(myText: String) {
-        delay(2000)
-        Log.d("my Fun", myText)
-    }
+
+
 
 
 
