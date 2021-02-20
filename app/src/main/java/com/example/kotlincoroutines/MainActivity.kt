@@ -9,7 +9,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         doTaskA(1)
+        printMyTextAfterDelay("Hello Kotlin")
     }
+
+
+
+    fun printMyTextAfterDelay(myText: String) {
+        Thread.sleep(2000)
+        Log.d("my Fun", myText)
+    }
+
+
+
+
+
+
+
 
 
     private fun doTaskA(label:Int) {
