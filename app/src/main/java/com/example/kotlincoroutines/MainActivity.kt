@@ -15,12 +15,8 @@ class MainActivity : AppCompatActivity() {
 
 
         GlobalScope.launch {
-            GlobalScope.launch {
-                printCoroutines("Mohamed")
-            }
-            GlobalScope.launch {
-                printCoroutines("Tamer")
-            }
+            printCoroutines("Mohamed")
+            printCoroutines("Tamer")
 
         }
 
@@ -38,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     //Coroutines
     suspend fun printCoroutines(myText: String) {
-        GlobalScope.launch {
+        withContext(Dispatchers.IO) {
             delay(2000)
             Log.d("MainActivity", myText)
         }
