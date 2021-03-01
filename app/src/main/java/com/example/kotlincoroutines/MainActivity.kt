@@ -15,8 +15,13 @@ class MainActivity : AppCompatActivity() {
 
 
         GlobalScope.launch {
-            printCoroutines("Tamer")
-            printCoroutines("Mohamed")
+            GlobalScope.launch {
+                printCoroutines("Mohamed")
+            }
+            GlobalScope.launch {
+                printCoroutines("Tamer")
+            }
+
         }
 
 
