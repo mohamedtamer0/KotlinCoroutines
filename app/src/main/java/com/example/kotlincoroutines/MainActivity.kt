@@ -13,20 +13,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         myTextView = findViewById(R.id.my_text)
 
-        Log.d("MainActivity", "main thread")
 
-        runBlocking {
+        GlobalScope.launch {
             printCoroutines("Tamer")
+            printCoroutines("Mohamed")
         }
 
 
-
-        Log.d("MainActivity", "back to main thread")
-
-
-
-        doTaskA(1)
-        printMyTextAfterDelay1("Hello Kotlin")
+//        doTaskA(1)
+//        printMyTextAfterDelay1("Hello Kotlin")
 
 //        GlobalScope.launch (newSingleThreadContext("Tamer Thread")) {
 //            Log.d("Fun", "Current thread : ${Thread.currentThread().name}")
@@ -38,51 +33,52 @@ class MainActivity : AppCompatActivity() {
 
     //Coroutines
     suspend fun printCoroutines(myText: String) {
-        delay(2000)
-        Log.d("MainActivity", "io thread")
-
-
-    }
-
-
-    fun printMyTextAfterDelay1(myText: String) {
-        Thread.sleep(2000)
-        Log.d("my Fun", myText)
-    }
-
-
-    private fun doTaskA(label: Int) {
-        when (label) {
-            1 -> {
-                Log.d("task A", "we deal with one A")
-                doTaskB(1)
-            }
-            2 -> {
-                Log.d("task A", "we deal with two A")
-                doTaskB(2)
-            }
-            3 -> {
-                Log.d("task A", "we deal with three A")
-                doTaskB(3)
-            }
+        GlobalScope.launch {
+            delay(2000)
+            Log.d("MainActivity", myText)
         }
+
     }
 
-    private fun doTaskB(label: Int) {
-        when (label) {
-            1 -> {
-                Log.d("task B", "we deal with one B")
-                doTaskA(2)
-            }
-            2 -> {
-                Log.d("task B", "we deal with two B")
-                doTaskA(3)
-            }
-            3 -> {
-                Log.d("task B", "we deal with three B")
-            }
-        }
-    }
+
+//    fun printMyTextAfterDelay1(myText: String) {
+//        Thread.sleep(2000)
+//        Log.d("my Fun", myText)
+//    }
+//
+//
+//    private fun doTaskA(label: Int) {
+//        when (label) {
+//            1 -> {
+//                Log.d("task A", "we deal with one A")
+//                doTaskB(1)
+//            }
+//            2 -> {
+//                Log.d("task A", "we deal with two A")
+//                doTaskB(2)
+//            }
+//            3 -> {
+//                Log.d("task A", "we deal with three A")
+//                doTaskB(3)
+//            }
+//        }
+//    }
+//
+//    private fun doTaskB(label: Int) {
+//        when (label) {
+//            1 -> {
+//                Log.d("task B", "we deal with one B")
+//                doTaskA(2)
+//            }
+//            2 -> {
+//                Log.d("task B", "we deal with two B")
+//                doTaskA(3)
+//            }
+//            3 -> {
+//                Log.d("task B", "we deal with three B")
+//            }
+//        }
+//    }
 
 
 }
