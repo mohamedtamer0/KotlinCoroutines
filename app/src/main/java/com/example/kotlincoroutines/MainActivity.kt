@@ -12,10 +12,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         myTextView = findViewById(R.id.my_text)
+
+        Log.d("MainActivity", "main thread")
+
         runBlocking {
             printCoroutines("Tamer")
         }
 
+
+
+        Log.d("MainActivity", "back to main thread")
 
 
 
@@ -30,19 +36,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     //Coroutines
     suspend fun printCoroutines(myText: String) {
-        GlobalScope.launch (Dispatchers.IO){
-            delay(5000)
-            withContext(Dispatchers.Main) {
-                myTextView.text = myText
-            }
+        delay(2000)
+        Log.d("MainActivity", "io thread")
 
 
-        }
     }
-
 
 
     fun printMyTextAfterDelay1(myText: String) {
@@ -51,53 +51,38 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private fun doTaskA(label:Int) {
-        when(label) {
+    private fun doTaskA(label: Int) {
+        when (label) {
             1 -> {
-                Log.d("task A","we deal with one A")
+                Log.d("task A", "we deal with one A")
                 doTaskB(1)
             }
             2 -> {
-                Log.d("task A","we deal with two A")
+                Log.d("task A", "we deal with two A")
                 doTaskB(2)
             }
             3 -> {
-                Log.d("task A","we deal with three A")
+                Log.d("task A", "we deal with three A")
                 doTaskB(3)
             }
         }
     }
 
-    private fun doTaskB(label:Int) {
-        when(label) {
+    private fun doTaskB(label: Int) {
+        when (label) {
             1 -> {
-                Log.d("task B","we deal with one B")
+                Log.d("task B", "we deal with one B")
                 doTaskA(2)
             }
             2 -> {
-                Log.d("task B","we deal with two B")
+                Log.d("task B", "we deal with two B")
                 doTaskA(3)
             }
             3 -> {
-                Log.d("task B","we deal with three B")
+                Log.d("task B", "we deal with three B")
             }
         }
     }
-
-
 
 
 }
