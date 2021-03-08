@@ -5,17 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 
 class MainActivity : AppCompatActivity() {
-   private val parentJop = Job()
+    private val parentJop = Job()
     lateinit var myTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         myTextView = findViewById(R.id.my_text)
-
-
-
         val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO + parentJop)
         coroutineScope.launch {
 
@@ -28,6 +26,33 @@ class MainActivity : AppCompatActivity() {
             //joinAll(child1, child2)
             //launch { delay(2000) }
         }
+
+        val kotlinChannel = Channel<String>()
+        val charList = arrayOf("A", "B", "C", "D")
+
+        runBlocking {
+            launch {
+                for (char in charList) {
+                    kotlinChannel.send(char)
+                    delay(1000)
+                }
+            }
+
+            launch {
+                for (char in kotlinChannel) {
+                    Log.d("Here", char)
+                }
+            }
+
+
+        }
+
+
+
+
+
+
+
 
 
 
@@ -52,11 +77,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private suspend fun getUserFromNetwork() : String {
+    private suspend fun getUserFromNetwork(): String {
         delay(2000)
         return "Tamer"
     }
-    private suspend fun getUserFromDatabase() : String {
+
+    private suspend fun getUserFromDatabase(): String {
         delay(3000)
         return "Tamer"
     }
@@ -65,11 +91,6 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         parentJop.cancel()
     }
-
-
-
-
-
 
 
 //    fun printMyTextAfterDelay1(myText: String) {
