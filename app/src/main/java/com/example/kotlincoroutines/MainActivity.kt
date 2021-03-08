@@ -6,6 +6,9 @@ import android.util.Log
 import android.widget.TextView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
 
 class MainActivity : AppCompatActivity() {
     private val parentJop = Job()
@@ -49,8 +52,20 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        //////////////// Flow \\\\\\\\\\\\\\\\\\\\
 
-
+        runBlocking {
+            //producer
+            flow<Int> {
+                for (i in 1..10) {
+                    emit(i)
+                    Log.d("here producer", i.toString())
+                }
+            }.filter { i:Int -> i < 5 } //Intermediate
+                    .collect {
+                        Log.d("here collector", it.toString())
+                    }
+        }
 
 
 
