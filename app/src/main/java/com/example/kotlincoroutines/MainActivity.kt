@@ -14,12 +14,13 @@ class MainActivity : AppCompatActivity() {
         myTextView = findViewById(R.id.my_text)
 
 
-        GlobalScope.launch {
-            printCoroutines("Mohamed")
-            printCoroutines("Tamer")
-
+        val parentJop = Job()
+        val job: Job = GlobalScope.launch(parentJop) {
+            launch { getUserFromNetwork() }
+            launch { getUserFromDatabase() }
         }
 
+        job.cancel()
 
 //        doTaskA(1)
 //        printMyTextAfterDelay1("Hello Kotlin")
@@ -40,6 +41,20 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
+    private suspend fun getUserFromNetwork() : String {
+        delay(2000)
+        return "Tamer"
+    }
+    private suspend fun getUserFromDatabase() : String {
+        delay(3000)
+        return "Tamer"
+    }
+
+
+
+
 
 
 //    fun printMyTextAfterDelay1(myText: String) {
