@@ -7,6 +7,7 @@ import android.widget.TextView
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
+   private val parentJop = Job()
     lateinit var myTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,13 +15,21 @@ class MainActivity : AppCompatActivity() {
         myTextView = findViewById(R.id.my_text)
 
 
-        val parentJop = Job()
-        val job: Job = GlobalScope.launch(parentJop) {
-            launch { getUserFromNetwork() }
-            launch { getUserFromDatabase() }
+
+        val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO + parentJop)
+        coroutineScope.launch {
+
         }
 
-        job.cancel()
+        val job: Job = GlobalScope.launch(parentJop) {
+            val child1 = launch { getUserFromNetwork() }
+            val child2 = launch { getUserFromDatabase() }
+
+            //joinAll(child1, child2)
+            //launch { delay(2000) }
+        }
+
+
 
 //        doTaskA(1)
 //        printMyTextAfterDelay1("Hello Kotlin")
@@ -51,6 +60,12 @@ class MainActivity : AppCompatActivity() {
         delay(3000)
         return "Tamer"
     }
+
+    override fun onStop() {
+        super.onStop()
+        parentJop.cancel()
+    }
+
 
 
 
